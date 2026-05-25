@@ -1,7 +1,6 @@
 package com.github.romankh3.image.comparison.model;
 
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collections;
@@ -50,15 +49,8 @@ public class ImageComparisonResult {
      * @param differencePercent the percent of the differences between images.
      * @return instance of the {@link ImageComparisonResult} object.
      */
-    public static ImageComparisonResult defaultSizeMisMatchResult(BufferedImage expected, BufferedImage actual,
-                                                                  float differencePercent) {
-        return new ImageComparisonResult()
-                .setImageComparisonState(ImageComparisonState.SIZE_MISMATCH)
-                .setDifferencePercent(differencePercent)
-                .setExpected(expected)
-                .setActual(actual)
-                .setResult(actual)
-                .setRectangles(Collections.emptyList());
+    public static ImageComparisonResult defaultSizeMisMatchResult(BufferedImage expected, BufferedImage actual, float differencePercent) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -70,12 +62,7 @@ public class ImageComparisonResult {
      * @return instance of the {@link ImageComparisonResult} object.
      */
     public static ImageComparisonResult defaultMisMatchResult(BufferedImage expected, BufferedImage actual, float differencePercent) {
-        return new ImageComparisonResult()
-                .setImageComparisonState(ImageComparisonState.MISMATCH)
-                .setDifferencePercent(differencePercent)
-                .setExpected(expected)
-                .setActual(actual)
-                .setResult(actual);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -86,12 +73,7 @@ public class ImageComparisonResult {
      * @return instance of the {@link ImageComparisonResult} object.
      */
     public static ImageComparisonResult defaultMatchResult(BufferedImage expected, BufferedImage actual) {
-        return new ImageComparisonResult()
-                .setImageComparisonState(ImageComparisonState.MATCH)
-                .setExpected(expected)
-                .setActual(actual)
-                .setResult(actual)
-                .setRectangles(Collections.emptyList());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -101,61 +83,54 @@ public class ImageComparisonResult {
      * @return this {@link ImageComparisonResult} object.
      */
     public ImageComparisonResult writeResultTo(File file) {
-        ImageComparisonUtil.saveImage(file, result);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public BufferedImage getExpected() {
-        return expected;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonResult setExpected(BufferedImage expected) {
-        this.expected = expected;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public BufferedImage getActual() {
-        return actual;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonResult setActual(BufferedImage actual) {
-        this.actual = actual;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public BufferedImage getResult() {
-        return result;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonResult setResult(BufferedImage result) {
-        this.result = result;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonState getImageComparisonState() {
-        return imageComparisonState;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonResult setImageComparisonState(ImageComparisonState imageComparisonState) {
-        this.imageComparisonState = imageComparisonState;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public float getDifferencePercent() {
-        return differencePercent;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     ImageComparisonResult setDifferencePercent(float differencePercent) {
-        this.differencePercent = differencePercent;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public List<Rectangle> getRectangles() {
-        return rectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparisonResult setRectangles(List<Rectangle> rectangles) {
-        this.rectangles = rectangles;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

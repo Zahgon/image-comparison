@@ -2,7 +2,6 @@ package com.github.romankh3.image.comparison.model;
 
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
-
 import java.awt.Point;
 import java.util.Objects;
 
@@ -58,11 +57,7 @@ public class Rectangle {
      * @return default rectangle {@link Rectangle}.
      */
     public static Rectangle createDefault() {
-        Rectangle defaultRectangle = new Rectangle();
-
-        defaultRectangle.setDefaultValues();
-
-        return defaultRectangle;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -71,9 +66,7 @@ public class Rectangle {
      * @return created {@link Rectangle} instance.
      */
     public static Rectangle createZero() {
-        Rectangle rectangle = new Rectangle();
-        rectangle.makeZeroRectangle();
-        return rectangle;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -83,10 +76,7 @@ public class Rectangle {
      * @return new merged {@link Rectangle}.
      */
     public Rectangle merge(Rectangle that) {
-        return new Rectangle(min(this.getMinPoint().x, that.getMinPoint().x),
-                min(this.getMinPoint().y, that.getMinPoint().y),
-                max(this.getMaxPoint().x, that.getMaxPoint().x),
-                max(this.getMaxPoint().y, that.getMaxPoint().y));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -96,28 +86,21 @@ public class Rectangle {
      * @return true if this over lapp that, false otherwise.
      */
     public boolean isOverlapping(Rectangle that) {
-        if (this.getMaxPoint().getY() < that.getMinPoint().getY() ||
-                that.getMaxPoint().getY() < this.getMinPoint().getY()) {
-            return false;
-        }
-        return this.getMaxPoint().getX() >= that.getMinPoint().getX() &&
-                that.getMaxPoint().getX() >= this.getMinPoint().getX();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Set default values for rectangle.
      */
     public void setDefaultValues() {
-        this.maxPoint = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        this.minPoint = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Make zero rectangle.
      */
     public void makeZeroRectangle() {
-        this.minPoint = new Point();
-        this.maxPoint = new Point();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -126,7 +109,7 @@ public class Rectangle {
      * @return the size of the {@link Rectangle}.
      */
     public Integer size() {
-        return getWidth() * getHeight();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -136,7 +119,7 @@ public class Rectangle {
      * @return rectangle width.
      */
     public int getWidth() {
-        return maxPoint.x - minPoint.x + 1;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -146,7 +129,7 @@ public class Rectangle {
      * @return rectangle height.
      */
     public int getHeight() {
-        return maxPoint.y - minPoint.y + 1;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -156,40 +139,32 @@ public class Rectangle {
      * @return {@code true} if provided {@link Point} contains, {@code false} - otherwise.
      */
     boolean containsPoint(Point point) {
-        return  point.x >= minPoint.x && point.x<= maxPoint.x && point.y >= minPoint.y && point.y <= maxPoint.y;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Point getMinPoint() {
-        return minPoint;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setMinPoint(Point minPoint) {
-        this.minPoint = minPoint;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Point getMaxPoint() {
-        return maxPoint;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setMaxPoint(Point maxPoint) {
-        this.maxPoint = maxPoint;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Rectangle rectangle = (Rectangle) o;
-        return minPoint.equals(rectangle.minPoint) &&
-                maxPoint.equals(rectangle.maxPoint);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(minPoint, maxPoint);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

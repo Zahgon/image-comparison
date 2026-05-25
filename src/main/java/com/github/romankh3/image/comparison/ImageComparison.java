@@ -4,14 +4,12 @@ import com.github.romankh3.image.comparison.model.ExcludedAreas;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
 import com.github.romankh3.image.comparison.model.Rectangle;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static com.github.romankh3.image.comparison.ImageComparisonUtil.getDifferencePercent;
 import static java.util.Collections.emptyList;
 
@@ -44,7 +42,8 @@ public class ImageComparison {
     /**
      * {@link File} of the result destination.
      */
-    private /* @Nullable */ File destination;
+    private File /* @Nullable */
+    destination;
 
     /**
      * The number which marks how many rectangles. Beginning from 2.
@@ -155,9 +154,7 @@ public class ImageComparison {
      * @param actual   actual image to be compared
      */
     public ImageComparison(String expected, String actual) {
-        this(ImageComparisonUtil.readImageFromResources(expected),
-                ImageComparisonUtil.readImageFromResources(actual),
-                null);
+        this(ImageComparisonUtil.readImageFromResources(expected), ImageComparisonUtil.readImageFromResources(actual), null);
     }
 
     /**
@@ -190,29 +187,7 @@ public class ImageComparison {
      * @return the result of the drawing.
      */
     public ImageComparisonResult compareImages() {
-
-        // check that the images have the same size
-        if (isImageSizesNotEqual(expected, actual)) {
-            BufferedImage actualResized = ImageComparisonUtil.resize(actual, expected.getWidth(), expected.getHeight());
-            return ImageComparisonResult.defaultSizeMisMatchResult(expected, actual, getDifferencePercent(actualResized, expected));
-        }
-
-        List<Rectangle> rectangles = populateRectangles();
-
-        if (rectangles.isEmpty()) {
-            ImageComparisonResult matchResult = ImageComparisonResult.defaultMatchResult(expected, actual);
-            if (drawExcludedRectangles) {
-                matchResult.setResult(drawRectangles(rectangles));
-                saveImageForDestination(matchResult.getResult());
-            }
-            return matchResult;
-        }
-
-        BufferedImage resultImage = drawRectangles(rectangles);
-        saveImageForDestination(resultImage);
-        return ImageComparisonResult.defaultMisMatchResult(expected, actual, getDifferencePercent(actual, expected))
-                .setResult(resultImage)
-                .setRectangles(rectangles);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -220,18 +195,8 @@ public class ImageComparison {
      *
      * @return the result comparisonState
      */
-    public ImageComparisonResult simpleComparison(){
-        // check that the images have the same size
-        if (isImageSizesNotEqual(expected, actual)) {
-            BufferedImage actualResized = ImageComparisonUtil.resize(actual, expected.getWidth(), expected.getHeight());
-            return ImageComparisonResult.defaultSizeMisMatchResult(expected, actual, getDifferencePercent(actualResized, expected));
-        }
-
-        if (isFirstDifferences()){
-            return ImageComparisonResult.defaultMisMatchResult(expected, actual, 0);
-        }else {
-            return ImageComparisonResult.defaultMatchResult(expected, actual);
-        }
+    public ImageComparisonResult simpleComparison() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -280,16 +245,13 @@ public class ImageComparison {
         } else if (pixelToleranceLevel == 0.0) {
             return true;
         }
-
         int red1 = (expectedRgb >> 16) & 0xff;
         int green1 = (expectedRgb >> 8) & 0xff;
         int blue1 = (expectedRgb) & 0xff;
         int red2 = (actualRgb >> 16) & 0xff;
         int green2 = (actualRgb >> 8) & 0xff;
         int blue2 = (actualRgb) & 0xff;
-
-        return (Math.pow(red2 - red1, 2) + Math.pow(green2 - green1, 2) + Math.pow(blue2 - blue1, 2))
-                > differenceConstant;
+        return (Math.pow(red2 - red1, 2) + Math.pow(green2 - green1, 2) + Math.pow(blue2 - blue1, 2)) > differenceConstant;
     }
 
     /**
@@ -299,11 +261,9 @@ public class ImageComparison {
      */
     private List<Rectangle> populateRectangles() {
         long countOfDifferentPixels = populateTheMatrixOfTheDifferences();
-
         if (countOfDifferentPixels == 0) {
             return emptyList();
         }
-
         if (isAllowedPercentOfDifferentPixels(countOfDifferentPixels)) {
             return emptyList();
         }
@@ -313,11 +273,7 @@ public class ImageComparison {
             regions.put(i, Rectangle.createDefault());
         }
         createRectangles(counter, regions);
-
-        List<Rectangle> rectangles = regions.values().stream()
-                .filter(rectangle -> !rectangle.equals(Rectangle.createDefault())
-                        && rectangle.size() >= minimalRectangleSize)
-                .collect(Collectors.toList());
+        List<Rectangle> rectangles = regions.values().stream().filter(rectangle -> !rectangle.equals(Rectangle.createDefault()) && rectangle.size() >= minimalRectangleSize).collect(Collectors.toList());
         return mergeRectangles(mergeRectangles(rectangles));
     }
 
@@ -375,7 +331,6 @@ public class ImageComparison {
         if (x > rectangle.getMaxPoint().getX()) {
             rectangle.getMaxPoint().x = x;
         }
-
         if (y < rectangle.getMinPoint().getY()) {
             rectangle.getMinPoint().y = y;
         }
@@ -409,7 +364,6 @@ public class ImageComparison {
             }
             position++;
         }
-
         return rectangles.stream().filter(it -> !it.equals(Rectangle.createZero())).collect(Collectors.toList());
     }
 
@@ -422,10 +376,8 @@ public class ImageComparison {
     private BufferedImage drawRectangles(List<Rectangle> rectangles) {
         BufferedImage resultImage = ImageComparisonUtil.deepCopy(actual);
         Graphics2D graphics = preparedGraphics2D(resultImage);
-
         drawExcludedRectangles(graphics);
         drawRectanglesOfDifferences(rectangles, graphics);
-
         return resultImage;
     }
 
@@ -438,7 +390,6 @@ public class ImageComparison {
         if (drawExcludedRectangles) {
             graphics.setColor(this.excludedRectangleColor);
             draw(graphics, excludedAreas.getExcluded());
-
             if (fillExcludedRectangles) {
                 fillRectangles(graphics, excludedAreas.getExcluded(), percentOpacityExcludedRectangles);
             }
@@ -454,18 +405,12 @@ public class ImageComparison {
     private void drawRectanglesOfDifferences(List<Rectangle> rectangles, Graphics2D graphics) {
         List<Rectangle> rectanglesForDraw;
         graphics.setColor(this.differenceRectangleColor);
-
         if (maximalRectangleCount > 0 && maximalRectangleCount < rectangles.size()) {
-            rectanglesForDraw = rectangles.stream()
-                    .sorted(Comparator.comparing(Rectangle::size))
-                    .skip(rectangles.size() - maximalRectangleCount)
-                    .collect(Collectors.toList());
+            rectanglesForDraw = rectangles.stream().sorted(Comparator.comparing(Rectangle::size)).skip(rectangles.size() - maximalRectangleCount).collect(Collectors.toList());
         } else {
             rectanglesForDraw = new ArrayList<>(rectangles);
         }
-
         draw(graphics, rectanglesForDraw);
-
         if (fillDifferenceRectangles) {
             fillRectangles(graphics, rectanglesForDraw, percentOpacityDifferenceRectangles);
         }
@@ -503,12 +448,7 @@ public class ImageComparison {
      * @param rectangles the collection of the {@link Rectangle}.
      */
     private void draw(Graphics2D graphics, List<Rectangle> rectangles) {
-        rectangles.forEach(rectangle -> graphics.drawRect(
-                rectangle.getMinPoint().x,
-                rectangle.getMinPoint().y,
-                rectangle.getWidth() - 1,
-                rectangle.getHeight() - 1)
-        );
+        rectangles.forEach(rectangle -> graphics.drawRect(rectangle.getMinPoint().x, rectangle.getMinPoint().y, rectangle.getWidth() - 1, rectangle.getHeight() - 1));
     }
 
     /**
@@ -521,20 +461,9 @@ public class ImageComparison {
      * @param percentOpacity the opacity of the fill.
      */
     private void fillRectangles(Graphics2D graphics, List<Rectangle> rectangles, double percentOpacity) {
-
-        graphics.setColor(new Color(graphics.getColor().getRed(),
-                graphics.getColor().getGreen(),
-                graphics.getColor().getBlue(),
-                (int) (percentOpacity / 100 * 255)
-        ));
-        rectangles.forEach(rectangle -> graphics.fillRect(
-                rectangle.getMinPoint().x - 1,
-                rectangle.getMinPoint().y - 1,
-                rectangle.getWidth() - 2,
-                rectangle.getHeight() - 2)
-        );
+        graphics.setColor(new Color(graphics.getColor().getRed(), graphics.getColor().getGreen(), graphics.getColor().getBlue(), (int) (percentOpacity / 100 * 255)));
+        rectangles.forEach(rectangle -> graphics.fillRect(rectangle.getMinPoint().x - 1, rectangle.getMinPoint().y - 1, rectangle.getWidth() - 2, rectangle.getHeight() - 2));
     }
-
 
     /**
      * Group rectangle regions in matrix.
@@ -562,13 +491,10 @@ public class ImageComparison {
         if (isJumpRejected(x, y)) {
             return;
         }
-
         matrix[y][x] = regionCount;
-
         for (int i = 0; i < threshold; i++) {
             joinToRegion(x + 1 + i, y);
             joinToRegion(x, y + 1 + i);
-
             joinToRegion(x + 1 + i, y - 1 - i);
             joinToRegion(x - 1 - i, y + 1 + i);
             joinToRegion(x + 1 + i, y + 1 + i);
@@ -583,7 +509,7 @@ public class ImageComparison {
      * @return List of {@link Rectangle}
      */
     public List<Rectangle> createMask() {
-        return populateRectangles();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -598,15 +524,11 @@ public class ImageComparison {
     }
 
     public double getPixelToleranceLevel() {
-        return pixelToleranceLevel;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setPixelToleranceLevel(double pixelToleranceLevel) {
-        if (0.0 <= pixelToleranceLevel && pixelToleranceLevel < 1) {
-            this.pixelToleranceLevel = pixelToleranceLevel;
-            differenceConstant = calculateDifferenceConstant();
-        }
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private double calculateDifferenceConstant() {
@@ -614,126 +536,110 @@ public class ImageComparison {
     }
 
     public boolean isDrawExcludedRectangles() {
-        return drawExcludedRectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setDrawExcludedRectangles(boolean drawExcludedRectangles) {
-        this.drawExcludedRectangles = drawExcludedRectangles;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public int getThreshold() {
-        return threshold;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setThreshold(int threshold) {
-        this.threshold = threshold;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Optional<File> getDestination() {
-        return Optional.ofNullable(destination);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setDestination(File destination) {
-        this.destination = destination;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public BufferedImage getExpected() {
-        return expected;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public BufferedImage getActual() {
-        return actual;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public int getRectangleLineWidth() {
-        return rectangleLineWidth;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setRectangleLineWidth(int rectangleLineWidth) {
-        this.rectangleLineWidth = rectangleLineWidth;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Integer getMinimalRectangleSize() {
-        return minimalRectangleSize;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setMinimalRectangleSize(Integer minimalRectangleSize) {
-        this.minimalRectangleSize = minimalRectangleSize;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Integer getMaximalRectangleCount() {
-        return maximalRectangleCount;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setMaximalRectangleCount(Integer maximalRectangleCount) {
-        this.maximalRectangleCount = maximalRectangleCount;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setExcludedAreas(List<Rectangle> excludedAreas) {
-        this.excludedAreas = new ExcludedAreas(excludedAreas);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean isFillDifferenceRectangles() {
-        return this.fillDifferenceRectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public double getPercentOpacityDifferenceRectangles() {
-        return this.percentOpacityDifferenceRectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setDifferenceRectangleFilling(boolean fillRectangles, double percentOpacity) {
-        this.fillDifferenceRectangles = fillRectangles;
-        this.percentOpacityDifferenceRectangles = percentOpacity;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean isFillExcludedRectangles() {
-        return this.fillExcludedRectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public double getPercentOpacityExcludedRectangles() {
-        return this.percentOpacityExcludedRectangles;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setExcludedRectangleFilling(boolean fillRectangles, double percentOpacity) {
-        this.fillExcludedRectangles = fillRectangles;
-        this.percentOpacityExcludedRectangles = percentOpacity;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public double getAllowingPercentOfDifferentPixels() {
-        return allowingPercentOfDifferentPixels;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setAllowingPercentOfDifferentPixels(double allowingPercentOfDifferentPixels) {
-        if (0.0 <= allowingPercentOfDifferentPixels && allowingPercentOfDifferentPixels <= 100) {
-            this.allowingPercentOfDifferentPixels = allowingPercentOfDifferentPixels;
-        }
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Color getDifferenceRectangleColor() {
-        return this.differenceRectangleColor;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setDifferenceRectangleColor(Color differenceRectangleColor) {
-        this.differenceRectangleColor = differenceRectangleColor;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Color getExcludedRectangleColor() {
-        return this.excludedRectangleColor;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ImageComparison setExcludedRectangleColor(Color excludedRectangleColor) {
-        this.excludedRectangleColor = excludedRectangleColor;
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

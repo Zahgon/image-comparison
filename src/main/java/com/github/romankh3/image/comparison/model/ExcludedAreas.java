@@ -39,11 +39,7 @@ public class ExcludedAreas {
      * @return {@code true} if this {@link Point} contains in areas from {@link ExcludedAreas#excluded}.
      */
     public boolean contains(Point point) {
-        for (Rectangle rectangle : excluded) {
-            if (rectangle.containsPoint(point))
-                return true;
-        }
-        return false;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -52,6 +48,6 @@ public class ExcludedAreas {
      * @return the collection of the {@link Rectangle} objects.
      */
     public List<Rectangle> getExcluded() {
-        return excluded;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }
